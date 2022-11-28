@@ -217,4 +217,4 @@ def create_question():
     return new_question
 
 myquestion=create_question()
-myquestion.take_answ
+myquestion.take_answer()
