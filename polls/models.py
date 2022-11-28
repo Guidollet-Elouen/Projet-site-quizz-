@@ -216,5 +216,5 @@ def create_question():
         new_question=Comparison()
     return new_question
 
-myquestion=create_question()
-myquestion.take_answ
+#myquestion=create_question()
+#myquestion.take_answer()
