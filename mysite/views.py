@@ -4,18 +4,26 @@ def index(request):
     return HttpResponse("<html>"
                         "<head><title>INDEX</title></head>"
                         "<body>"
-                        "<h1 align = 'center' >INDEX</h1><ol>"
-                        "<li bgcolor = 'rgb(255,0,0)' >Questions à choix multiples</li>"
+                        "<h1 align = 'center'> <font color ='Blue' size = 10 >INDEX</font></h1><ul>"
+                        "<hr/><li>"
+                        "<font size= 5 color = 'red'>"
+                        "<a href='polls/'target='_blank'>Questions à choix multiples</a>"
+                        " </font>"
+                        "</li>"
                         "<li>Questions à choix unique</li>"
                         "<li>Questions libres</li>"
-                        "</ol>"
-                        
+                        "</ul>"
+                        "<img alt='image html exemple' src='/imgT2.jpg' width='120' height='75' />"
+                       " <form method='post' action='mailto:votreemail@email.com'><p>Quelle couleur de chaussures vous préférez?</p>"
+                        "<input type='checkbox' name='shoes' value='noires' /> Simple Noires <br/>"
+	                    "<input type='checkbox' name='shoes' value='blanches' /> Simple Blanches <br/>"
+	                    "<input type='checkbox' name='shoes' value='grises' /> Nuances de gris <br/>"
+	                    "<input type='checkbox' name='shoes' value='noires&blanches' /> Noires et blanches<br/>"
+	                    "<input type='submit' value='Menvoyer un Email' />"
+                        "</form>"
+                        "<textarea cols=50 rows=2>Zone de texte!</textarea>"
                         "</body>"
                         "</html>")
-    '''return HttpResponse("<html><body><h1><a href='/polls/'>Hello, world.</a></h1> You're at the polls index.</body></html>")
-'''
-'''def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    output = ', '.join([q.question_text for q in latest_question_list])
-    return HttpResponse(output)'''
+
+
 
