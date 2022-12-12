@@ -326,7 +326,7 @@ def recreate_comparison(result,i):
 
 ##DATABASE part
 import sqlite3
-conn = sqlite3.connect('/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/db.sqlite3')
+conn = sqlite3.connect('db.sqlite3')
 cur = conn.cursor()
 
 #Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS COMPARISON(question TEXT,choice TEXT,solution TEXT)'''  #Create Table
@@ -408,7 +408,3 @@ def answer_question():
         take_number()
     if type_question==4:
         take_comparison()
-
-answer_question()
-
-
