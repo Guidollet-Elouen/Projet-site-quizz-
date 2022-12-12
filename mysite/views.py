@@ -4,18 +4,17 @@ def index(request):
     return HttpResponse("<html>"
                         "<head><title>INDEX</title></head>"
                         "<body>"
-                        "<h1 align = 'center' >INDEX</h1><ol>"
-                        "<li bgcolor = 'rgb(255,0,0)' >Questions à choix multiples</li>"
-                        "<li>Questions à choix unique</li>"
-                        "<li>Questions libres</li>"
-                        "</ol>"
-                        
+                        "<h1 align = 'center'> <font color ='Blue' size = 10 >INDEX</font></h1><ul>"
+                        "<hr/><li>"
+                        "<font size= 50 color = 'red'>"
+                        "<a href='/polls/'>Questions à choix multiples</a>"
+                        " </font>"
+                        "</li>"
+                        "<li><font size = 50 color= 'red' ><a href ='/quizz/'>Questions à choix unique</a></font></li>"
+                        "<li><font size = 50 color = 'red'> <a href ='/open/'>Questions libres</a></font></li>"
+                        "</ul>"
                         "</body>"
                         "</html>")
-    '''return HttpResponse("<html><body><h1><a href='/polls/'>Hello, world.</a></h1> You're at the polls index.</body></html>")
-'''
-'''def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    output = ', '.join([q.question_text for q in latest_question_list])
-    return HttpResponse(output)'''
+
+
 
