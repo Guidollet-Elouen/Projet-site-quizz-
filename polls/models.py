@@ -12,8 +12,6 @@ class Question():
 #__init__ with NameClass() without argument
 #take_answer() without argument which gets an answer from the user and return the correction (with _make_verification)
 
-
-#Make test, assertion, at each input to check if the answer returned is ok
 #Adapt make_verification() of Open to be more flexible
 
 class MultipleChoice(Question):
@@ -89,9 +87,27 @@ class MultipleChoice(Question):
             print(False)
             print("The correct answer was " + str(self.solution))
 
-#firstquestion=MultipleChoice()
-#firstquestion.take_answer()
+    def insert(self):
+        Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}")'''
+        cur.execute(Insert_MCQ)
+        conn.commit()
 
+    def recreate(self,result,i):
+        choice=str_to_list(result[i][1])
+        solution=str_to_intlist(result[i][2])
+        self.actualise(result[i][0],choice,solution)
+
+    def get(self):
+        cur.execute('''SELECT * FROM MCQ''') #read the table
+        result = cur.fetchall()
+        random_choice=random.randrange(len(result))
+        self.recreate(result,random_choice)
+
+    def quizz(self):
+        list_html=[]
+        list_html.append(self.text_question)
+        list_html.append(self.text_choice)
+        return list_html
 
 class Open(Question):
     solution : str
@@ -129,9 +145,26 @@ class Open(Question):
             print(False)
             print("The correct answer was "+str(self.solution))
 
-#openquestion=Open()
-#openquestion.take_answer()
+    def insert():
+        Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
+        cur.execute(Insert_OPEN)
+        conn.commit()
 
+    def recreate(self,result,i):
+        solution=result[i][1]
+        question=result[i][0]
+        self.actualise(question,solution)
+
+    def get(self):
+        cur.execute('''SELECT * FROM OPEN''') #read the table
+        result = cur.fetchall()
+        random_choice=random.randrange(len(result))
+        self.recreate(result,random_choice)
+
+    def quizz(self):
+        list_html=[]
+        list_html.append(self.text_question)
+        return list_html
 
 class Number(Question):
     solution: float
@@ -178,8 +211,26 @@ class Number(Question):
             print(False)
             print("The correct answer was " + str(self.solution))
 
-#numberquestion=Number()
-#numberquestion.take_answer()
+    def insert():
+        Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
+        cur.execute(Insert_NUMBER)
+        conn.commit()
+
+    def recreate(self,result,i):
+        solution=float(result[i][1])
+        question=result[i][0]
+        self.actualise(question,solution)
+
+    def get(self):
+        cur.execute('''SELECT * FROM NUMBER''') #read the table
+        result = cur.fetchall()
+        random_choice=random.randrange(len(result))
+        self.recreate(result,random_choice)
+
+    def quizz(self):
+        list_html=[]
+        list_html.append(self.text_question)
+        return list_html
 
 class Comparison(Question):
     choice : str
@@ -244,26 +295,28 @@ class Comparison(Question):
             print(False)
             print("The correct answer was "+str(self.solution))
 
-#comparisonquestion=Comparison()
-#comparisonquestion.take_answer()
+    def insert():
+        Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{self.text_choice}","{intlist_to_str(self.solution)}")'''
+        cur.execute(Insert_COMPARISON)
+        conn.commit()
 
+    def recreate(self,result,i):
+        choice=result[i][1]
+        question=result[i][0]
+        solution=str_to_intlist(result[i][2])
+        self.actualise(question,choice,solution)
 
-def create_question(type_question):
-    #type_question=int(input("Which question do you want to create, enter 1 for MCQ, 2 for Open, 3 for Number, 4 for Comparison : "))
-    if type_question==1:
-        new_question=MultipleChoice()
-    if type_question==2:
-        new_question=Open()
-    if type_question==3:
-        new_question=Number()
-    if type_question==4:
-        new_question=Comparison()
-    new_question.ask_user()
-    return new_question
+    def get(self):
+        cur.execute('''SELECT * FROM COMPARISON''') #read the table
+        result = cur.fetchall()
+        random_choice=random.randrange(len(result))
+        self.recreate(result,random_choice)
 
-#myquestion=create_question(1)
-#myquestion.take_answer()
-
+    def quizz(self):
+        list_html=[]
+        list_html.append(self.text_question)
+        list_html.append(self.text_choice)
+        return list_html
 ##Function to translate list to int/str
 
 def list_to_str(L):
@@ -271,11 +324,13 @@ def list_to_str(L):
     for l in L:
         a=a+";"+l
     return a
+
 def intlist_to_str(L):
     a=""
     for l in L:
         a=a+";"+str(l)
     return a
+
 def str_to_list(a):
     l=[]
     i_char=0
@@ -288,6 +343,7 @@ def str_to_list(a):
             l[j_list]+=a[i_char]
         i_char+=1
     return l
+
 def str_to_intlist(a):
     L=str_to_list(a)
     L_end=[]
@@ -295,126 +351,109 @@ def str_to_intlist(a):
         L_end.append(int(l))
     return L_end
 
-def recreate_qcm(result,i):
-    choice=str_to_list(result[i][1])
-    solution=str_to_intlist(result[i][2])
-    mcq=MultipleChoice()
-    mcq.actualise(result[i][0],choice,solution)
-    return mcq
-
-def recreate_open(result,i):
-    open=Open()
-    solution=result[i][1]
-    question=result[i][0]
-    open.actualise(question,solution)
-    return open
-
-def recreate_number(result,i):
-    number=Number()
-    solution=float(result[i][1])
-    question=result[i][0]
-    number.actualise(question,solution)
-    return number
-
-def recreate_comparison(result,i):
-    comparison=Comparison()
-    choice=result[i][1]
-    question=result[i][0]
-    solution=str_to_intlist(result[i][2])
-    comparison.actualise(question,choice,solution)
-    return comparison
-
 ##DATABASE part
 import sqlite3
 conn = sqlite3.connect('db.sqlite3')
 cur = conn.cursor()
-
 #Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS COMPARISON(question TEXT,choice TEXT,solution TEXT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
 #conn.commit()
 #cur.execute("""DROP TABLE OPEN""") #Destroy Table
 #conn.commit()
 
-
-##FONCTION CREATION ET REPONSE AUX QUESTIONS
-def insert_mcq():#Insert an element in a table checker les doublons
-    myquestion = create_question(1)
-    Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{myquestion.text_question}","{list_to_str(myquestion.text_choice)}","{intlist_to_str(myquestion.solution)}")'''
-    cur.execute(Insert_MCQ)
-    conn.commit()
-
-def take_mcq():
-    cur.execute('''SELECT * FROM MCQ''') #read the table
-    result = cur.fetchall()
-    random_choice=random.randrange(len(result))
-    recreate_qcm(result,random_choice).take_answer()
-
-def insert_open():#Insert an element in a table
-    myquestion = create_question(2)
-    Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
-    cur.execute(Insert_OPEN)
-    conn.commit()
-
-def take_open():
-    cur.execute('''SELECT * FROM OPEN''') #read the table
-    result = cur.fetchall()
-    random_choice=random.randrange(len(result))
-    recreate_open(result,random_choice).take_answer()
-
-def insert_number():#Insert an element in a table
-    myquestion = create_question(3)
-    Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{myquestion.text_question}","{str(myquestion.solution)}")'''
-    cur.execute(Insert_NUMBER)
-    conn.commit()
-
-def take_number():
-    cur.execute('''SELECT * FROM NUMBER''') #read the table
-    result = cur.fetchall()
-    random_choice=random.randrange(len(result))
-    recreate_number(result,random_choice).take_answer()
-
-def insert_comparison():#Insert an element in a table
-    myquestion = create_question(4)
-    Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{myquestion.text_question}","{myquestion.text_choice}","{intlist_to_str(myquestion.solution)}")'''
-    cur.execute(Insert_COMPARISON)
-    conn.commit()
-
-def take_comparison():
-    cur.execute('''SELECT * FROM COMPARISON''') #read the table
-    result = cur.fetchall()
-    random_choice=random.randrange(len(result))
-    recreate_comparison(result,random_choice).take_answer()
-
 ##Fonction finale
-
-def creation_question():
+def create_empty_question():
     type_question=int(input("Which question do you want to create, enter 1 for MCQ, 2 for Open, 3 for Number, 4 for Comparison : "))
     if type_question==1:
-        insert_mcq()
+        new_question=MultipleChoice()
     if type_question==2:
-        insert_open()
+        new_question=Open()
     if type_question==3:
-        insert_number()
+        new_question=Number()
     if type_question==4:
-        insert_comparison()
+        new_question=Comparison()
+    return new_question
+
+
+def create_empty_precise_question(type_question):
+    if type_question==1:
+        new_question=MultipleChoice()
+    if type_question==2:
+        new_question=Open()
+    if type_question==3:
+        new_question=Number()
+    if type_question==4:
+        new_question=Comparison()
+    return new_question
+
+def insertion_question():
+    question=create_empty_question()
+    question.ask_user()
+    question.insert()
 
 def answer_question():
-    type_question=int(input("Which question do you want to answer, enter 1 for MCQ, 2 for Open, 3 for Number, 4 for Comparison : "))
-    if type_question==1:
-        take_mcq()
-    if type_question==2:
-        take_open()
-    if type_question==3:
-        take_number()
-    if type_question==4:
-        take_comparison()
+    question=get_question()
+    question.take_answer()
 
-def get_mcq():
-    cur.execute('''SELECT * FROM MCQ''') #read the table
-    result = cur.fetchall()
-    random_choice=random.randrange(len(result))
-    question=recreate_qcm(result,random_choice)
-    list_html=[]
-    list_html.append(question.text_question)
-    list_html.append(question.text_choice)
-    return list_html
+def get_question():
+    question=create_empty_question()
+    question.get()
+    return question
+
+#Function for html
+
+def quizz_mcq():
+    question=create_empty_precise_question(1)
+    question.get()
+    return question.quizz()
+
+def quizz_open():
+    question=create_empty_precise_question(2)
+    question.get()
+    return question.quizz()
+
+def quizz_number():
+    question=create_empty_precise_question(3)
+    question.get()
+    return question.quizz()
+
+def quizz_comparison():
+    question=create_empty_precise_question(4)
+    question.get()
+    return question.quizz()
+
+def listquizz_mcq(i):
+    list_question=[]
+    for j in range(i):
+        newquestion=quizz_mcq()
+        while (newquestion in list_question):
+            newquestion=quizz_mcq()
+        list_question.append(newquestion)
+    return list_question
+
+def listquizz_open(i):
+    list_question=[]
+    for j in range(i):
+        newquestion=quizz_open()
+        while (newquestion in list_question):
+            newquestion=quizz_open()
+        list_question.append(newquestion)
+    return list_question
+
+def listquizz_number(i):
+    list_question=[]
+    for j in range(i):
+        newquestion=quizz_number()
+        while (newquestion in list_question):
+            newquestion=quizz_number()
+        list_question.append(newquestion)
+    return list_question
+
+def listquizz_comparison(i):
+    list_question=[]
+    for j in range(i):
+        newquestion=quizz_comparison()
+        while (newquestion in list_question):
+            newquestion=quizz_comparison()
+        list_question.append(newquestion)
+    return list_question
