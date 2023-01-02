@@ -408,3 +408,13 @@ def answer_question():
         take_number()
     if type_question==4:
         take_comparison()
+
+def get_mcq():
+    cur.execute('''SELECT * FROM MCQ''') #read the table
+    result = cur.fetchall()
+    random_choice=random.randrange(len(result))
+    question=recreate_qcm(result,random_choice)
+    list_html=[]
+    list_html.append(question.text_question)
+    list_html.append(question.text_choice)
+    return list_html
