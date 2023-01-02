@@ -408,3 +408,5 @@ def answer_question():
         take_number()
     if type_question==4:
         take_comparison()
+
+answer_question()
