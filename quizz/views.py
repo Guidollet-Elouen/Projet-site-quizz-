@@ -15,4 +15,3 @@ def index(request):
                         "</html>")
 
 
-#jsdhukivehui h

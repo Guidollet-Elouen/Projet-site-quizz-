@@ -88,9 +88,12 @@ class MultipleChoice(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert(self):
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        cur = conn.cursor()
         Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_MCQ)
         conn.commit()
+        conn.close()
 
     def recreate(self,result,i):
         choice=str_to_list(result[i][1])
@@ -98,8 +101,11 @@ class MultipleChoice(Question):
         self.actualise(result[i][0],choice,solution)
 
     def get(self):
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        cur = conn.cursor()
         cur.execute('''SELECT * FROM MCQ''') #read the table
         result = cur.fetchall()
+        conn.close()
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
@@ -146,9 +152,12 @@ class Open(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert():
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
         cur.execute(Insert_OPEN)
         conn.commit()
+        conn.close()
 
     def recreate(self,result,i):
         solution=result[i][1]
@@ -156,8 +165,11 @@ class Open(Question):
         self.actualise(question,solution)
 
     def get(self):
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         cur.execute('''SELECT * FROM OPEN''') #read the table
         result = cur.fetchall()
+        conn.close()
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
@@ -212,9 +224,12 @@ class Number(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert():
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
         cur.execute(Insert_NUMBER)
         conn.commit()
+        conn.close()
 
     def recreate(self,result,i):
         solution=float(result[i][1])
@@ -222,8 +237,11 @@ class Number(Question):
         self.actualise(question,solution)
 
     def get(self):
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         cur.execute('''SELECT * FROM NUMBER''') #read the table
         result = cur.fetchall()
+        conn.close()
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
@@ -296,9 +314,12 @@ class Comparison(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert():
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{self.text_choice}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_COMPARISON)
         conn.commit()
+        conn.close()
 
     def recreate(self,result,i):
         choice=result[i][1]
@@ -307,8 +328,11 @@ class Comparison(Question):
         self.actualise(question,choice,solution)
 
     def get(self):
+        conn = sqlite3.connect('db.sqlite3')
+        cur = conn.cursor()
         cur.execute('''SELECT * FROM COMPARISON''') #read the table
         result = cur.fetchall()
+        conn.close()
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
@@ -353,8 +377,6 @@ def str_to_intlist(a):
 
 ##DATABASE part
 import sqlite3
-conn = sqlite3.connect('db.sqlite3')
-cur = conn.cursor()
 #Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS COMPARISON(question TEXT,choice TEXT,solution TEXT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
 #conn.commit()

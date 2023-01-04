@@ -15,6 +15,3 @@ def index(request):
                         "</ul>"
                         "</body>"
                         "</html>")
-
-
-
