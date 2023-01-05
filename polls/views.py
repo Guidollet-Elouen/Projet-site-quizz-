@@ -22,7 +22,7 @@ def index(request):
         html_question = html_question + "<p>"
         for j in range(L):
             html_question = html_question  +  "<input type='checkbox' id='coding' name='interest' value='coding'>"
-            html_question = html_question + "<label for='coding'>"+V[1][j]+"</label>"
+            html_question = html_question + "<label for='coding'>"+str(V[1][j])+"</label>"
             html_question = html_question + "</p>"
 
         html_response =  html_response + html_question

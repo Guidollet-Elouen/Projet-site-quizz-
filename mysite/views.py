@@ -10,8 +10,9 @@ def index(request):
                         "<a href='/polls/'>Questions à choix multiples</a>"
                         " </font>"
                         "</li>"
-                        "<li><font size = 50 color= 'red' ><a href ='/quizz/'>Questions à choix unique</a></font></li>"
+                        "<li><font size = 50 color= 'red' ><a href ='/comparison/'>Questions à comparaison </a></font></li>"
                         "<li><font size = 50 color = 'red'> <a href ='/open/'>Questions libres</a></font></li>"
+                        "<li><font size = 50 color = 'red'> <a href ='/number/'>Questions chiffrées </a></font></li>"
                         "</ul>"
                         "</body>"
                         "</html>")

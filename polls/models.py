@@ -152,7 +152,7 @@ class Open(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert():
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
         cur.execute(Insert_OPEN)
@@ -165,7 +165,7 @@ class Open(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         cur.execute('''SELECT * FROM OPEN''') #read the table
         result = cur.fetchall()
@@ -224,7 +224,7 @@ class Number(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert():
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
         cur.execute(Insert_NUMBER)
@@ -237,7 +237,7 @@ class Number(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         cur.execute('''SELECT * FROM NUMBER''') #read the table
         result = cur.fetchall()
@@ -314,7 +314,7 @@ class Comparison(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert():
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{self.text_choice}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_COMPARISON)
@@ -328,7 +328,7 @@ class Comparison(Question):
         self.actualise(question,choice,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
         cur = conn.cursor()
         cur.execute('''SELECT * FROM COMPARISON''') #read the table
         result = cur.fetchall()
@@ -479,3 +479,6 @@ def listquizz_comparison(i):
             newquestion=quizz_comparison()
         list_question.append(newquestion)
     return list_question
+
+
+
