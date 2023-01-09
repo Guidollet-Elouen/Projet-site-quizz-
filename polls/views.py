@@ -14,15 +14,15 @@ def index(request):
     html_response = ""
     for i in range(2):
         html_question=""
-        V = models.quizz_mcq()
-        L = len(V[1])
+        Question = models.quizz_mcq()
+        Taille = len(Question[1])
         html_question = html_question + "<fieldset>"
-        html_question = html_question + "<legend>" + str(V[0]) + "</legend>"
+        html_question = html_question + "<legend>" + str(Question[0]) + "</legend>"
         html_question = html_question + "<form method='post' action='mailto:email@example.com'>"
         html_question = html_question + "<p>"
-        for j in range(L):
+        for j in range(Taille):
             html_question = html_question  +  "<input type='checkbox' id='coding' name='interest' value='coding'>"
-            html_question = html_question + "<label for='coding'>"+str(V[1][j])+"</label>"
+            html_question = html_question + "<label for='coding'>"+str(Question[1][j])+"</label>"
             html_question = html_question + "</p>"
 
         html_response =  html_response + html_question

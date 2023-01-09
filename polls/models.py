@@ -1,6 +1,6 @@
 # Create your models here.
 import random
-from config import road
+from .config import road
 
 class Question():
     text_question : str
