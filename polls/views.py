@@ -55,3 +55,6 @@ def take_quiz(request):
         else:
             messages.warning(request, f'Wrong answer, Correct Answer is {correct_answer}')
             return HttpResponseRedirect(request.session['previous_page'])
+
+
+#test
