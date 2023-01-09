@@ -99,6 +99,15 @@ class MultipleChoice(Question):
         conn.commit()
         conn.close()
 
+    def get_byid(self,id_ref):
+        conn = sqlite3.connect(road)
+        cur = conn.cursor()
+        command=f'''SELECT * FROM MCQ WHERE id={id_ref}'''
+        cur.execute(command) #read the table
+        result = cur.fetchall()
+        conn.close()
+        self.recreate(result,0)
+
     def recreate(self,result,i):
         choice=str_to_list(result[i][1])
         solution=str_to_intlist(result[i][2])
@@ -123,6 +132,7 @@ class MultipleChoice(Question):
 class Open(Question):
     solution : str
     answer : str
+    id : int
     def _make_verification(self):
         return(self.solution==self._transformation())
 
@@ -138,14 +148,16 @@ class Open(Question):
         self.text_question=""
         self.solution=""
         self.answer=""
+        self.id=0
 
     def ask_user(self):
         self._insert_question()
         self._insert_solution()
 
-    def actualise(self,question,solution):
+    def actualise(self,question,solution,id):
         self.text_question=question
         self.solution=solution
+        self.id=id
 
     def take_answer(self,user_answer):
         self.answer=user_answer
@@ -157,7 +169,10 @@ class Open(Question):
     def insert(self):
         conn = sqlite3.connect(road)
         cur = conn.cursor()
-        Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
+        cur.execute('''SELECT * FROM OPEN''') #read the table
+        result = cur.fetchall()
+        new_id=len(result)+1
+        Insert_OPEN =f'''INSERT INTO OPEN(question,solution,id) VALUES ("{self.text_question}","{self.solution}","{new_id}")'''
         cur.execute(Insert_OPEN)
         conn.commit()
         conn.close()
@@ -165,7 +180,8 @@ class Open(Question):
     def recreate(self,result,i):
         solution=result[i][1]
         question=result[i][0]
-        self.actualise(question,solution)
+        id=result[i][2]
+        self.actualise(question,solution,id)
 
     def get(self):
         conn = sqlite3.connect(road)
@@ -176,14 +192,25 @@ class Open(Question):
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
+    def get_byid(self,id_ref):
+        conn = sqlite3.connect(road)
+        cur = conn.cursor()
+        command=f'''SELECT * FROM OPEN WHERE id={id_ref}'''
+        cur.execute(command) #read the table
+        result = cur.fetchall()
+        conn.close()
+        self.recreate(result,0)
+
     def quizz(self):
         list_html=[]
         list_html.append(self.text_question)
+        list_html.append(self.id)
         return list_html
 
 class Number(Question):
     solution: float
     answer: str
+    id : int
 
     def _make_verification(self):
         return (self.solution == self._transformation())
@@ -208,14 +235,16 @@ class Number(Question):
         self.text_question=""
         self.solution=0.0
         self.answer=""
+        self.id=0
 
     def ask_user(self):
         self._insert_question()
         self._insert_solution()
 
-    def actualise(self,question,solution):
+    def actualise(self,question,solution,id):
         self.text_question=question
         self.solution=solution
+        self.id=id
 
     def take_answer(self,user_answer):
         self.answer = user_answer
@@ -227,7 +256,10 @@ class Number(Question):
     def insert(self):
         conn = sqlite3.connect(road)
         cur = conn.cursor()
-        Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
+        cur.execute('''SELECT * FROM NUMBER''') #read the table
+        result = cur.fetchall()
+        new_id=len(result)+1
+        Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution,id) VALUES ("{self.text_question}","{str(self.solution)},"{new_id}")'''
         cur.execute(Insert_NUMBER)
         conn.commit()
         conn.close()
@@ -235,7 +267,8 @@ class Number(Question):
     def recreate(self,result,i):
         solution=float(result[i][1])
         question=result[i][0]
-        self.actualise(question,solution)
+        id=result[i][2]
+        self.actualise(question,solution,id)
 
     def get(self):
         conn = sqlite3.connect(road)
@@ -246,15 +279,26 @@ class Number(Question):
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
+    def get_byid(self,id_ref):
+        conn = sqlite3.connect(road)
+        cur = conn.cursor()
+        command=f'''SELECT * FROM NUMBER WHERE id={id_ref}'''
+        cur.execute(command) #read the table
+        result = cur.fetchall()
+        conn.close()
+        self.recreate(result,0)
+
     def quizz(self):
         list_html=[]
         list_html.append(self.text_question)
+        list_html.append(self.id)
         return list_html
 
 class Comparison(Question):
     choice : [str]
     solution : [int]
     answer : str
+    id : int
     def _transformation(self):
         answer_list = []
         for element in self.answer:
@@ -293,16 +337,18 @@ class Comparison(Question):
         self.choice=""
         self.solution=[]
         self.answer=""
+        self.id=0
 
     def ask_user(self):
         self._insert_question()
         self._insert_choice()
         self._insert_solution()
 
-    def actualise(self,question,choice,solution):
+    def actualise(self,question,choice,solution,id):
         self.text_question=question
         self.choice=choice
         self.solution=solution
+        self.id=id
 
     def take_answer(self,user_answer):
         self.answer=user_answer
@@ -314,7 +360,10 @@ class Comparison(Question):
     def insert(self):
         conn = sqlite3.connect(road)
         cur = conn.cursor()
-        Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.choice)}","{intlist_to_str(self.solution)}")'''
+        cur.execute('''SELECT * FROM COMPARISON''') #read the table
+        result = cur.fetchall()
+        new_id=len(result)+1
+        Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution,id) VALUES ("{self.text_question}","{list_to_str(self.choice)}","{intlist_to_str(self.solution)}","{new_id}")'''
         cur.execute(Insert_COMPARISON)
         conn.commit()
         conn.close()
@@ -323,7 +372,8 @@ class Comparison(Question):
         choice=str_to_list(result[i][1])
         question=result[i][0]
         solution=str_to_intlist(result[i][2])
-        self.actualise(question,choice,solution)
+        id=result[i][3]
+        self.actualise(question,choice,solution,id)
 
     def get(self):
         conn = sqlite3.connect(road)
@@ -334,10 +384,20 @@ class Comparison(Question):
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
+    def get_byid(self,id_ref):
+        conn = sqlite3.connect(road)
+        cur = conn.cursor()
+        command=f'''SELECT * FROM NUMBER WHERE id={id_ref}'''
+        cur.execute(command) #read the table
+        result = cur.fetchall()
+        conn.close()
+        self.recreate(result,0)
+
     def quizz(self):
         list_html=[]
         list_html.append(self.text_question)
         list_html.append(self.choice)
+        list_html.append(self.id)
         return list_html
 ##Function to translate list to int/str
 
@@ -377,9 +437,9 @@ def str_to_intlist(a):
 import sqlite3
 #conn = sqlite3.connect('db.sqlite3')
 #cur = conn.cursor()
-#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS MCQ(question TEXT,choice TEXT,solution TEXT,id INT)'''  #Create Table
+#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS NUMBER(question TEXT,solution TEXT,id INT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
-#cur.execute("""DROP TABLE MCQ""") #Destroy Table
+#cur.execute("""DROP TABLE NUMBER""") #Destroy Table
 #conn.commit()
 #conn.close()
 
@@ -479,3 +539,10 @@ def listquizz_comparison(i):
             newquestion=quizz_comparison()
         list_question.append(newquestion)
     return list_question
+
+def find_solution_id_mcq(id_ref):  #return solution of the question with id = id_ref
+    question=create_empty_precise_question(1)
+    question.get_byid(id_ref)
+    return question.solution
+
+insertion_question()
