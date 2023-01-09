@@ -1,6 +1,7 @@
 # Create your models here.
 import random
-road='/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/polls/db.sqlite3'
+from config import road
+
 class Question():
     text_question : str
     def __str__(self):
