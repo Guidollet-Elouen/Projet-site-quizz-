@@ -1,5 +1,6 @@
 # Create your models here.
 import random
+from config import road
 
 class Question():
     text_question : str
@@ -88,7 +89,7 @@ class MultipleChoice(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert(self):
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_MCQ)
@@ -101,7 +102,7 @@ class MultipleChoice(Question):
         self.actualise(result[i][0],choice,solution)
 
     def get(self):
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM MCQ''') #read the table
         result = cur.fetchall()
@@ -151,8 +152,8 @@ class Open(Question):
             print(False)
             print("The correct answer was "+str(self.solution))
 
-    def insert():
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+    def insert(self):
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
         cur.execute(Insert_OPEN)
@@ -165,7 +166,7 @@ class Open(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM OPEN''') #read the table
         result = cur.fetchall()
@@ -223,8 +224,8 @@ class Number(Question):
             print(False)
             print("The correct answer was " + str(self.solution))
 
-    def insert():
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+    def insert(self):
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
         cur.execute(Insert_NUMBER)
@@ -237,7 +238,7 @@ class Number(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM NUMBER''') #read the table
         result = cur.fetchall()
@@ -251,7 +252,7 @@ class Number(Question):
         return list_html
 
 class Comparison(Question):
-    choice : str
+    choice : [str]
     solution : [int]
     answer : str
     def _transformation(self):
@@ -276,10 +277,10 @@ class Comparison(Question):
             choice.append(str(i) + "." + next_choice)
             next_choice = input("Insert the next choice, if no more choice tap 0 : ")
             i += 1
-        self.text_choice=choice
+        self.choice=choice
 
     def _insert_solution(self):
-        print(self.text_choice)
+        print(self.choice)
         next_solution = input("Insert the number of solution : ")
         solution = []
         for element in next_solution:
@@ -289,7 +290,7 @@ class Comparison(Question):
 
     def __init__(self):
         self.text_question=""
-        self.text_choice=""
+        self.choice=""
         self.solution=[]
         self.answer=""
 
@@ -300,12 +301,12 @@ class Comparison(Question):
 
     def actualise(self,question,choice,solution):
         self.text_question=question
-        self.text_choice=choice
+        self.choice=choice
         self.solution=solution
 
     def take_answer(self):
         print(self.text_question)
-        print(self.text_choice)
+        print(self.choice)
         self.answer=input("Insert your answer : ")
         if self._make_verification():
             print(True)
@@ -313,22 +314,22 @@ class Comparison(Question):
             print(False)
             print("The correct answer was "+str(self.solution))
 
-    def insert():
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+    def insert(self):
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
-        Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{self.text_choice}","{intlist_to_str(self.solution)}")'''
+        Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.choice)}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_COMPARISON)
         conn.commit()
         conn.close()
 
     def recreate(self,result,i):
-        choice=result[i][1]
+        choice=str_to_list(result[i][1])
         question=result[i][0]
         solution=str_to_intlist(result[i][2])
         self.actualise(question,choice,solution)
 
     def get(self):
-        conn = sqlite3.connect("C:\\Users\\clara\\Documents\\Projet-site-quizz-\\polls\\db.sqlite3")
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM COMPARISON''') #read the table
         result = cur.fetchall()
@@ -339,7 +340,7 @@ class Comparison(Question):
     def quizz(self):
         list_html=[]
         list_html.append(self.text_question)
-        list_html.append(self.text_choice)
+        list_html.append(self.choice)
         return list_html
 ##Function to translate list to int/str
 
@@ -360,7 +361,7 @@ def str_to_list(a):
     i_char=0
     j_list=-1
     while i_char<len(a):
-        if a[i_char]==";":
+        if a[i_char]==";" or a[i_char]=="," or a[i_char]=="[":
             l.append("")
             j_list+=1
         else:
@@ -377,11 +378,13 @@ def str_to_intlist(a):
 
 ##DATABASE part
 import sqlite3
+#conn = sqlite3.connect('db.sqlite3')
+#cur = conn.cursor()
 #Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS COMPARISON(question TEXT,choice TEXT,solution TEXT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
+#cur.execute("""DROP TABLE COMPARISON""") #Destroy Table
 #conn.commit()
-#cur.execute("""DROP TABLE OPEN""") #Destroy Table
-#conn.commit()
+#conn.close()
 
 ##Fonction finale
 def create_empty_question():
@@ -479,6 +482,3 @@ def listquizz_comparison(i):
             newquestion=quizz_comparison()
         list_question.append(newquestion)
     return list_question
-
-
-
