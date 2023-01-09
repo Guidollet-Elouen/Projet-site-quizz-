@@ -18,6 +18,7 @@ class Question():
 class MultipleChoice(Question):
     text_choice : [str]
     solution : [int]
+    id : int
     answer : str
 
     def __str__(self):
@@ -67,16 +68,18 @@ class MultipleChoice(Question):
         self._insert_choice()
         self._insert_solution()
 
-    def actualise(self,question,choice,solution):
+    def actualise(self,question,choice,solution,id):
         self.text_question=question
         self.text_choice=choice
         self.solution=solution
+        self.id=id
 
     def __init__(self):
         self.text_question=""
         self.text_choice=[]
         self.solution=[]
         self.answer=""
+        self.id=0
 
     def take_answer(self,user_answer):
         self.answer=user_answer
@@ -88,7 +91,10 @@ class MultipleChoice(Question):
     def insert(self):
         conn = sqlite3.connect(road)
         cur = conn.cursor()
-        Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}")'''
+        cur.execute('''SELECT * FROM MCQ''') #read the table
+        result = cur.fetchall()
+        new_id=len(result)+1
+        Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution,id) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}","{new_id}")'''
         cur.execute(Insert_MCQ)
         conn.commit()
         conn.close()
@@ -96,7 +102,7 @@ class MultipleChoice(Question):
     def recreate(self,result,i):
         choice=str_to_list(result[i][1])
         solution=str_to_intlist(result[i][2])
-        self.actualise(result[i][0],choice,solution)
+        self.actualise(result[i][0],choice,solution,result[i][3])
 
     def get(self):
         conn = sqlite3.connect(road)
@@ -111,6 +117,7 @@ class MultipleChoice(Question):
         list_html=[]
         list_html.append(self.text_question)
         list_html.append(self.text_choice)
+        list_html.append(self.id)
         return list_html
 
 class Open(Question):
@@ -370,9 +377,9 @@ def str_to_intlist(a):
 import sqlite3
 #conn = sqlite3.connect('db.sqlite3')
 #cur = conn.cursor()
-#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS COMPARISON(question TEXT,choice TEXT,solution TEXT)'''  #Create Table
+#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS MCQ(question TEXT,choice TEXT,solution TEXT,id INT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
-#cur.execute("""DROP TABLE COMPARISON""") #Destroy Table
+#cur.execute("""DROP TABLE MCQ""") #Destroy Table
 #conn.commit()
 #conn.close()
 
