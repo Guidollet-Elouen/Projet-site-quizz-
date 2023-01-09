@@ -5,24 +5,24 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .models import Question
 from . import models
 
 def index(request):
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
-    for i in range(2):
+    Questions = models.listquizz_mcq(3)
+    for i in range(3):
         html_question=""
-        Question = models.quizz_mcq()
-        Taille = len(Question[1])
+        Taille = len(Questions[i][1])
+        Index = Questions[i][2]
         html_question = html_question + "<fieldset>"
-        html_question = html_question + "<legend>" + str(Question[0]) + "</legend>"
+        html_question = html_question + "<legend>" + str(Questions[i][0]) + "</legend>"
         html_question = html_question + "<form method='post' action='mailto:email@example.com'>"
         html_question = html_question + "<p>"
         for j in range(Taille):
-            html_question = html_question  +  "<input type='checkbox' id='coding' name='interest' value='coding'>"
-            html_question = html_question + "<label for='coding'>"+str(Question[1][j])+"</label>"
+            html_question = html_question + f"<input type='checkbox' id='{Index}' name={Index} value={Index}>"
+            html_question = html_question + "<label for='coding'>"+str(Questions[i][1][j])+"</label>"
             html_question = html_question + "</p>"
 
         html_response =  html_response + html_question
@@ -32,7 +32,6 @@ def index(request):
 
     http_response = html_header + html_response + html_footer
     return HttpResponse(http_response)
-
 
 def take_quiz(request):
     questions = Question.text_question
@@ -56,5 +55,3 @@ def take_quiz(request):
             messages.warning(request, f'Wrong answer, Correct Answer is {correct_answer}')
             return HttpResponseRedirect(request.session['previous_page'])
 
-
-#test

@@ -8,7 +8,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from polls import models
 from polls.models import Question
 
-
 def index(request):
     html_header = "<html><body>"
     html_footer = "</body></html>"
@@ -16,9 +15,9 @@ def index(request):
     for i in range(2):
         html_question=""
         Question= models.quizz_comparison()
-        Taille = len(Question)
+        Taille = len(Question[1])
         html_question = html_question + "<fieldset>"
-        html_question = html_question + "<legend title='Input the ranking'>" + str(Question[0]) + "</legend>"
+        html_question = html_question + "<legend title='Input the ranking'>" + str(Question[0])+ "</legend>"
         html_question = html_question + "<form method='post' action='mailto:email@example.com'>"
         html_question = html_question + "<p>"
         for j in range(Taille):
