@@ -2,7 +2,7 @@ import requests
 import sqlite3
 from bs4 import BeautifulSoup
 import random
-road='/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/polls/db.sqlite3'
+from config import road
 
 
 #conn = sqlite3.connect(road)
@@ -67,12 +67,12 @@ def get_wiki():
     cur = conn.cursor()
     cur.execute('''SELECT * FROM WIKI''') #read the table
     result = cur.fetchall()
-    random_choice=0#random.randrange(len(result))
+    random_choice=random.randrange(len(result))
     conn.close()
     return (result[random_choice][0],result[random_choice][1],result[random_choice][2])
 
 #URL = "https://en.wikipedia.org/wiki/Special:Random"
 #URL = "https://en.wikipedia.org/wiki/List_of_Super_Fight_League_champions"
-a=insertion_wiki(URL)
-print(a)
-#print(get_wiki())
+#a=insertion_wiki(URL)
+#print(a)
+print(get_wiki())
