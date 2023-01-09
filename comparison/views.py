@@ -14,18 +14,19 @@ def index(request):
     html_response = ""
     for i in range(2):
         html_question=""
-        V = models.quizz_comparison()
-        L = len(V)
+        Question= models.quizz_comparison()
+        Taille = len(Question[1])
         html_question = html_question + "<fieldset>"
-        html_question = html_question + "<legend>" + str(V[0]) + "</legend>"
+        html_question = html_question + "<legend title='Input the ranking'>" + str(Question[0])+ "</legend>"
         html_question = html_question + "<form method='post' action='mailto:email@example.com'>"
         html_question = html_question + "<p>"
-        for j in range(L):
-            html_question = html_question  +  "<input type='checkbox' id='coding' name='interest' value='coding'>"
-            html_question = html_question + "<label for='coding'>"+str(V[1][j])+"</label>"
+        for j in range(Taille):
+            html_question = html_question + "<label for='coding'>"+Question[1][j]+"</label>"
             html_question = html_question + "</p>"
 
         html_response =  html_response + html_question
+        html_response = html_response + "Answer:<input type='text' name='Name' size='15' maxlength='15' /><br />"
+        html_response = html_response + "</br>"
         html_response = html_response + "<input type='submit' value= 'Send email' />"
         html_response = html_response + "</form>"
         html_response = html_response + "</fieldset>"
