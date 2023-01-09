@@ -8,9 +8,9 @@ def index(request):
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
-    for i in range(2):
+    for i in range(20):
         html_question=""
-        V = models.quizz_open()
+        V = models.quizz_number()
         html_question = html_question + "<fieldset>"
         html_question = html_question + "<legend>" + str(V[0]) + "</legend>"
         html_question = html_question + "<form method='post' action='mailto:email@example.com'>"
