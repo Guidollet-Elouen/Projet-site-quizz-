@@ -78,15 +78,12 @@ class MultipleChoice(Question):
         self.solution=[]
         self.answer=""
 
-    def take_answer(self):
-        print(self.text_question)
-        print(self.text_choice)
-        self.answer=input("Insert your answer : ")
+    def take_answer(self,user_answer):
+        self.answer=user_answer
         if self._make_verification():
-            print(True)
+            return(True)
         else:
-            print(False)
-            print("The correct answer was " + str(self.solution))
+            return(False)
 
     def insert(self):
         conn = sqlite3.connect(road)
@@ -143,14 +140,12 @@ class Open(Question):
         self.text_question=question
         self.solution=solution
 
-    def take_answer(self):
-        print(self.text_question)
-        self.answer=input("Insert your answer : ")
+    def take_answer(self,user_answer):
+        self.answer=user_answer
         if self._make_verification():
-            print(True)
+            return(True)
         else:
-            print(False)
-            print("The correct answer was "+str(self.solution))
+            return(False)
 
     def insert(self):
         conn = sqlite3.connect(road)
@@ -215,14 +210,12 @@ class Number(Question):
         self.text_question=question
         self.solution=solution
 
-    def take_answer(self):
-        print(self.text_question)
-        self.answer = input("Insert your answer : ")
+    def take_answer(self,user_answer):
+        self.answer = user_answer
         if self._make_verification():
-            print(True)
+            return(True)
         else:
-            print(False)
-            print("The correct answer was " + str(self.solution))
+            return(False)
 
     def insert(self):
         conn = sqlite3.connect(road)
@@ -304,15 +297,12 @@ class Comparison(Question):
         self.choice=choice
         self.solution=solution
 
-    def take_answer(self):
-        print(self.text_question)
-        print(self.choice)
-        self.answer=input("Insert your answer : ")
+    def take_answer(self,user_answer):
+        self.answer=user_answer
         if self._make_verification():
-            print(True)
+            return(True)
         else:
-            print(False)
-            print("The correct answer was "+str(self.solution))
+            return(False)
 
     def insert(self):
         conn = sqlite3.connect(road)
