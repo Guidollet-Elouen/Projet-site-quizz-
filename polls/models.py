@@ -1,6 +1,6 @@
 # Create your models here.
 import random
-
+road='/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/polls/db.sqlite3'
 class Question():
     text_question : str
     def __str__(self):
@@ -88,7 +88,7 @@ class MultipleChoice(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert(self):
-        conn = sqlite3.connect('/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/polls/db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_MCQ)
@@ -101,7 +101,7 @@ class MultipleChoice(Question):
         self.actualise(result[i][0],choice,solution)
 
     def get(self):
-        conn = sqlite3.connect('/Users/elouenguidollet/PycharmProjects/Projet-site-quizz-final/polls/db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM MCQ''') #read the table
         result = cur.fetchall()
@@ -152,7 +152,7 @@ class Open(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_OPEN =f'''INSERT INTO OPEN(question,solution) VALUES ("{myquestion.text_question}","{myquestion.solution}")'''
         cur.execute(Insert_OPEN)
@@ -165,7 +165,7 @@ class Open(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM OPEN''') #read the table
         result = cur.fetchall()
@@ -224,7 +224,7 @@ class Number(Question):
             print("The correct answer was " + str(self.solution))
 
     def insert(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution) VALUES ("{self.text_question}","{str(self.solution)}")'''
         cur.execute(Insert_NUMBER)
@@ -237,7 +237,7 @@ class Number(Question):
         self.actualise(question,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM NUMBER''') #read the table
         result = cur.fetchall()
@@ -314,7 +314,7 @@ class Comparison(Question):
             print("The correct answer was "+str(self.solution))
 
     def insert(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         Insert_COMPARISON =f'''INSERT INTO COMPARISON(question,choice,solution) VALUES ("{self.text_question}","{list_to_str(self.choice)}","{intlist_to_str(self.solution)}")'''
         cur.execute(Insert_COMPARISON)
@@ -328,7 +328,7 @@ class Comparison(Question):
         self.actualise(question,choice,solution)
 
     def get(self):
-        conn = sqlite3.connect('db.sqlite3')
+        conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM COMPARISON''') #read the table
         result = cur.fetchall()
