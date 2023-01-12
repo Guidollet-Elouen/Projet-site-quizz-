@@ -1,6 +1,6 @@
 # Create your models here.
 import random
-from .config import road
+from .config import *
 
 class Question():
     text_question : str
@@ -103,7 +103,7 @@ class MultipleChoice(Question):
         conn = sqlite3.connect(road)
         cur = conn.cursor()
         command=f'''SELECT * FROM MCQ WHERE id={id_ref}'''
-        cur.execute(command) #read the table
+        cur.execute(command) #read the tableJ
         result = cur.fetchall()
         conn.close()
         self.recreate(result,0)
@@ -418,7 +418,9 @@ def str_to_list(a):
     i_char=0
     j_list=-1
     while i_char<len(a):
-        if a[i_char]==";" or a[i_char]=="," or a[i_char]=="[":
+        if a[i_char]=="]":
+            None
+        elif a[i_char]==";" or a[i_char]=="," or a[i_char]=="[":
             l.append("")
             j_list+=1
         else:
@@ -472,6 +474,10 @@ def insertion_question():
     question=create_empty_question()
     question.ask_user()
     question.insert()
+
+def answer_question():
+    question=get_question()
+    question.take_answer()
 
 def get_question():
     question=create_empty_question()
