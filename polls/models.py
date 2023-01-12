@@ -473,10 +473,6 @@ def insertion_question():
     question.ask_user()
     question.insert()
 
-def answer_question():
-    question=get_question()
-    question.take_answer()
-
 def get_question():
     question=create_empty_question()
     question.get()
@@ -543,6 +539,4 @@ def listquizz_comparison(i):
 def find_solution_id_mcq(id_ref):  #return solution of the question with id = id_ref
     question=create_empty_precise_question(1)
     question.get_byid(id_ref)
-    return question.solution
-
-insertion_question()
+    return question
