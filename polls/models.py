@@ -546,3 +546,8 @@ def find_solution_id_mcq(id_ref):  #return solution of the question with id = id
     question=create_empty_precise_question(1)
     question.get_byid(id_ref)
     return question
+
+def find_solution_id_open(id_ref):  #return solution of the question with id = id_ref
+    question=create_empty_precise_question(2)
+    question.get_byid(id_ref)
+    return question
