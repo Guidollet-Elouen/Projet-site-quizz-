@@ -259,7 +259,7 @@ class Number(Question):
         cur.execute('''SELECT * FROM NUMBER''') #read the table
         result = cur.fetchall()
         new_id=len(result)+1
-        Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution,id) VALUES ("{self.text_question}","{str(self.solution)},"{new_id}")'''
+        Insert_NUMBER =f'''INSERT INTO NUMBER(question,solution,id) VALUES ("{self.text_question}","{str(self.solution)}","{new_id}")'''
         cur.execute(Insert_NUMBER)
         conn.commit()
         conn.close()
@@ -551,3 +551,10 @@ def find_solution_id_open(id_ref):  #return solution of the question with id = i
     question=create_empty_precise_question(2)
     question.get_byid(id_ref)
     return question
+
+def find_solution_id_number(id_ref):  #return solution of the question with id = id_ref
+    question=create_empty_precise_question(3)
+    question.get_byid(id_ref)
+    return question
+
+#prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters 
