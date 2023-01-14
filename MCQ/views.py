@@ -1,16 +1,6 @@
-from pyexpat.errors import messages
-
-from django.shortcuts import render
-
-from pyexpat.errors import messages
-
-from django.shortcuts import render
-
-# Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 
-from . import models
-
+from polls import models
 
 def index(request):
     html_header = "<html><body>"

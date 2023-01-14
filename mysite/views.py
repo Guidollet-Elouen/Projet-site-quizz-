@@ -7,7 +7,7 @@ def index(request):
                         "<h1 align = 'center'> <font color ='Blue' size = 10 >INDEX</font></h1><ul>"
                         "<hr/><li>"
                         "<font size= 50 color = 'red'>"
-                        "<a href='/polls/'>Multiple choice Questions </a>"
+                        "<a href='/MCQ/'>Multiple choice Questions </a>"
                         " </font>"
                         "</li>"
                         "<li><font size = 50 color= 'red' ><a href ='/comparison/'>Comparison Questions </a></font></li>"

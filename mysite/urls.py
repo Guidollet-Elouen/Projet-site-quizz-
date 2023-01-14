@@ -18,7 +18,7 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('polls/', include('polls.urls')),
+    path('MCQ/', include('MCQ.urls')),
     path('comparison/', include('comparison.urls')),
     path('open/', include('open.urls')),
     path('number/', include('number.urls')),
