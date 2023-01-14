@@ -1,5 +1,4 @@
 from django.http import HttpResponse, HttpResponseRedirect
-
 from polls import models
 
 def index(request):
