@@ -562,4 +562,44 @@ def find_solution_id_comparison(id_ref):  #return solution of the question with 
     question.get_byid(id_ref)
     return question
 
+def nb_question_mcq():
+    conn = sqlite3.connect(road)
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM MCQ''') #read the table
+    result = cur.fetchall()
+    nb_questioninbase=len(result)
+    conn.commit()
+    conn.close()
+    return nb_questioninbase
+
+def nb_question_open():
+    conn = sqlite3.connect(road)
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM OPEN''') #read the table
+    result = cur.fetchall()
+    nb_questioninbase=len(result)
+    conn.commit()
+    conn.close()
+    return nb_questioninbase
+
+def nb_question_number():
+    conn = sqlite3.connect(road)
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM NUMBER''') #read the table
+    result = cur.fetchall()
+    nb_questioninbase=len(result)
+    conn.commit()
+    conn.close()
+    return nb_questioninbase
+
+def nb_question_comparison():
+    conn = sqlite3.connect(road)
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM COMPARISON''') #read the table
+    result = cur.fetchall()
+    nb_questioninbase=len(result)
+    conn.commit()
+    conn.close()
+    return nb_questioninbase
+
 #prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters 

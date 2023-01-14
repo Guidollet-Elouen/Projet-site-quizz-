@@ -5,8 +5,9 @@ def index(request):
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
-    Questions = models.listquizz_mcq(1)
-    for i in range(1):
+    nb_question=1
+    Questions = models.listquizz_mcq(nb_question)
+    for i in range(nb_question):
         html_question = ""
         Taille = len(Questions[i][1])
         Index = Questions[i][2]
@@ -51,15 +52,10 @@ def find_numberchoice(request):
     question=models.find_solution_id_mcq(question_id)
     return len(question.text_choice)
 
-#qezfzeqfqez
 def take_quiz(request):
-    questions = []
-    a = 0
-    affichage=[]
     answers=[]
-    answer_user=[]
-    longueur_choix=find_numberchoice(request)
-    number_choice=longueur_choix
+    answers_list=[]
+    number_choice=find_numberchoice(request)
     for j in range(number_choice):#Trouver comment trouver le nombre de choix de la question
         answers.append(request.GET.get('user_answer'+str(j)))
     for j in range(number_choice):
@@ -67,20 +63,11 @@ def take_quiz(request):
             None
         else:
             test = models.str_to_list(answers[j])
-            answer_user.append(test[0])
+            answers_list.append(test[0])
             question_id=test[1]
-    #test=models.str_to_list(answers)
-    #answer_user=test[0]
-    #question_id=test[1]
-    for i in range(1):
-        questions.append(models.find_solution_id_mcq(int(question_id))) #Indice de question
+    question=models.find_solution_id_mcq(int(question_id)) #Find question with id=question_id
     if request.method == 'GET':
-        user_answer = answer_user # Id de la box sur laquelle l'user clique
-        print("user_answer=",user_answer)
-        for i in range(1):
-            if questions[i].take_answer(user_answer):
-                a += 1
-                affichage.append("Correct")
-            else:
-                affichage.append("Wrong")
-        return HttpResponse(affichage)
+        if question.take_answer(answers_list):
+            return HttpResponse("Correct")
+        else:
+            return HttpResponse("Wrong")

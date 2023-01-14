@@ -1,16 +1,19 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from polls import models
+from polls import config
+import sqlite3
 
 def index(request):
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
-    for i in range(1):
+    nb_question=1
+    Question = models.listquizz_number(nb_question)
+    for i in range(nb_question):
         html_question=""
-        Question = models.quizz_number()
-        question_id=Question[1]
+        question_id=Question[i][1]
         html_question = html_question + "<fieldset>"
-        html_question = html_question + "<legend>" + str(Question[0]) + "</legend>"
+        html_question = html_question + "<legend>" + str(Question[i][0]) + "</legend>"
         html_question = html_question + "<form method='get' action='take_quiz/'>"
         html_question = html_question + f"Answer:<input type='text' name='Name' size='15' maxlength='15' /><br />"
         html_question = html_question + "</br>"
@@ -24,24 +27,16 @@ def index(request):
 
 
 def take_quiz(request):
-    affichage=[]
-    questions = []
+    nb_questioninbase=models.nb_question_number()
     answers=request.GET.get('Name')
-    print(answers)
     question_id=1
     find_id=request.GET.get(str(question_id))
-    while find_id==None and question_id<5:
+    while find_id==None and question_id<nb_questioninbase+1:
         question_id+=1
         find_id=request.GET.get(str(question_id))
-    print(question_id)
-    for i in range(1):
-        questions.append(models.find_solution_id_number(question_id)) #Indice de question
+    question=models.find_solution_id_number(question_id) #Find the question with id=question_id
     if request.method == 'GET':
-        user_answer = answers
-        print("user_answer=",user_answer)
-        for i in range(1):
-            if questions[i].take_answer(answers):
-                affichage.append("Correct")
-            else:
-                affichage.append("Wrong")
-        return HttpResponse(affichage)
+        if question.take_answer(answers):
+            return HttpResponse("Correct")
+        else:
+            return HttpResponse("Wrong")
