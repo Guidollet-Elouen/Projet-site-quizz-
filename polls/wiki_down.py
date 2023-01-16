@@ -57,7 +57,8 @@ def insertion_wiki(link): #sometimes problems with some word of the text which s
         return "not confirmed"
     conn = sqlite3.connect(road)
     cur = conn.cursor()
-    Insert_wiki =f'''INSERT INTO WIKI(title,header,link) VALUES ("{str(title)}","{str(header)}","{str(link)}")'''
+    #Insert_wiki =f'''INSERT INTO WIKI(title,header,link) VALUES ("{str(title)}","{str(header)}","{str(link)}")''' , {'username': username})
+    Insert_wiki =f'''INSERT INTO WIKI(title,header,link) VALUES ("{str(title)}",header=%(header)s,"{str(link)}"''' , {'header': str(header)}
     cur.execute(Insert_wiki)
     conn.commit()
     conn.close()
@@ -71,8 +72,7 @@ def get_wiki():
     conn.close()
     return (result[random_choice][0],result[random_choice][1],result[random_choice][2])
 
-#URL = "https://en.wikipedia.org/wiki/Special:Random"
+URL = "https://en.wikipedia.org/wiki/Special:Random"
 #URL = "https://en.wikipedia.org/wiki/List_of_Super_Fight_League_champions"
 #a=insertion_wiki(URL)
 #print(a)
-print(get_wiki())
