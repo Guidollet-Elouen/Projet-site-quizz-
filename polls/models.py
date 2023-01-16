@@ -1,7 +1,7 @@
 # Create your models here.
 import random
 from .config import *
-from .nlp import *
+
 class Question():
     text_question : str
     def __str__(self):
@@ -134,7 +134,7 @@ class Open(Question):
     answer : str
     id : int
     def _make_verification(self):
-        return nlp_test(self.answer,self.solution)
+        return(self.solution==self._transformation())
 
     def _transformation(self):
         return self.answer
@@ -602,17 +602,4 @@ def nb_question_comparison():
     conn.close()
     return nb_questioninbase
 
-def max_choice_qcm():
-    max_choice=0
-    conn = sqlite3.connect(road)
-    cur = conn.cursor()
-    cur.execute('''SELECT * FROM MCQ''') #read the table
-    result = cur.fetchall()
-    for question in result:
-        nb_choice=len(question[1])
-        if max_choice<nb_choice:
-            max_choice=nb_choice
-    conn.commit()
-    conn.close()
-    return max_choice
 #prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters 
