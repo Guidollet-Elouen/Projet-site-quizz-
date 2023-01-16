@@ -44,9 +44,12 @@ def find_numberchoice(request):
     answers=[]
     i=0
     answers.append(request.GET.get('user_answer' + str(i)))
-    while(answers[i]==None):
+    max_choice=models.max_choice_qcm()
+    while(answers[i]==None and i<max_choice):
         i+=1
         answers.append(request.GET.get('user_answer' + str(i)))
+    if i==max_choice:
+        return -1
     test = models.str_to_list(answers[i])
     question_id=test[1]
     question=models.find_solution_id_mcq(question_id)
@@ -56,6 +59,8 @@ def take_quiz(request):
     answers=[]
     answers_list=[]
     number_choice=find_numberchoice(request)
+    if number_choice==-1:
+        return HttpResponse("Absence de réponse")
     for j in range(number_choice):#Trouver comment trouver le nombre de choix de la question
         answers.append(request.GET.get('user_answer'+str(j)))
     for j in range(number_choice):
