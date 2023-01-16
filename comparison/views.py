@@ -20,7 +20,7 @@ def index(request):
         for j in range(Taille):
             html_question = html_question + "<label for='coding'>"+Question[i][1][j]+"</label>"
             html_question = html_question + "</p>"
-        html_question = html_question + f"Answer:<input type='text' name={'Name'+str(i)+str(question_id)} size='15' maxlength='15' /><br />"
+        html_question = html_question + f"Answer:<input type='text' required name={'Name'+str(i)+str(question_id)} size='15' maxlength='15' /><br />"
         html_question = html_question + "</br>"
         html_question = html_question + "</fieldset>"
         html_response =  html_response + html_question

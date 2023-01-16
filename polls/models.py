@@ -615,4 +615,4 @@ def max_choice_qcm():
     conn.commit()
     conn.close()
     return max_choice
-#prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters 
+#prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters

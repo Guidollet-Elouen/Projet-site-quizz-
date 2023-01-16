@@ -15,7 +15,7 @@ def index(request):
         html_question = html_question + "<fieldset>"
         html_question = html_question + "<legend>" + str(Question[i][0]) + "</legend>"
         html_question = html_question + "<form method='get' action='take_quiz/'>"
-        html_question = html_question + f"Answer:<input type='text' name={'Name'+str(i)+str(question_id)} size='15' maxlength='15' /><br />"
+        html_question = html_question + f"Answer:<input type='text' required name={'Name'+str(i)+str(question_id)} size='15' maxlength='15' /><br />"
         html_question = html_question + "</br>"
         html_question = html_question + "</fieldset>"
         html_response =  html_response + html_question
