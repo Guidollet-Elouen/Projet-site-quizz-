@@ -388,3 +388,4 @@ def nlp_test(result: str, solution: str, methods: list):
     # if word
     elif cat == 'W':
         return make_verification_w(result, solution)
+ 
