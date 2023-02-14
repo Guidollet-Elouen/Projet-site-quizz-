@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from polls import models
 from polls import config
 
-def index(request):
+def index(request): # Display the questions
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
@@ -28,18 +28,7 @@ def index(request):
     http_response = html_header + html_response + html_footer
     return HttpResponse(http_response)
 
-
-"""
-def get_request_field(request, field_name):
-    if field_name in request.args:
-        return request.args[field_name]
-    elif field_name in request.form:
-        return request.form[field_name]
-    else:
-        return None
-"""
-
-def find_numberchoice(request,max_choice,j):
+def find_numberchoice(request,max_choice,j): #Find the number of choices from the question displayed
     answers=[]
     i=0
     answers.append(request.GET.get('user_answer' +str(j)+ str(i)))
@@ -53,7 +42,7 @@ def find_numberchoice(request,max_choice,j):
     question=models.find_solution_id_mcq(question_id)
     return len(question.text_choice)
 
-def take_quiz(request):
+def take_quiz(request):#Take the user answer and return it's right or not
     affichage=[]
     nb_question=config.nb_question
     score=0

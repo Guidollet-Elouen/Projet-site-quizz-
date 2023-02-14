@@ -24,14 +24,14 @@ class MultipleChoice(Question):
     def __str__(self):
         return [self.text_question,self.text_choice,self.solution]
 
-    def _transformation(self):
+    def _transformation(self): #Transform the answer to be compare with solution
         answer_list=[]
         for element in self.answer:
             if not(element in ["",",",";"]):#ajouter d'autres elements separateurs
                 answer_list.append(int(element))
         return answer_list
 
-    def _make_verification(self):
+    def _make_verification(self): #Compare solution and user answer
         transfo=self._transformation()
         for elem_transfo in transfo:
             if not(elem_transfo in self.solution):
@@ -41,10 +41,10 @@ class MultipleChoice(Question):
                 return False
         return True
 
-    def _insert_question(self):
+    def _insert_question(self): #Ask the user to insert the text of the question
         self.text_question = input("Insert the question : ")
 
-    def _insert_choice(self):
+    def _insert_choice(self): #Ask the user to insert the choices of the question
         next_choice = input("Insert the first choice : ")
         choice = []
         i = 1
@@ -54,7 +54,7 @@ class MultipleChoice(Question):
             i += 1
         self.text_choice=choice
 
-    def _insert_solution(self):
+    def _insert_solution(self): #Ask the user to insert the solutions of the question
         print(self.text_choice)
         next_solution = int(input("Insert the number of the first solution : "))
         solution = []
@@ -63,57 +63,53 @@ class MultipleChoice(Question):
             next_solution = input("Insert the next solution, if no more choice tap 0 : ")
         self.solution = solution
 
-    def ask_user(self):
+    def ask_user(self): #Ask the user to create one question
         self._insert_question()
         self._insert_choice()
         self._insert_solution()
 
-    def actualise(self,question,choice,solution,id):
+    def actualise(self,question,choice,solution,id): #Actualise question with new attributs
         self.text_question=question
         self.text_choice=choice
         self.solution=solution
         self.id=id
 
-    def __init__(self):
+    def __init__(self): #Create an empty question
         self.text_question=""
         self.text_choice=[]
         self.solution=[]
         self.answer=""
         self.id=0
 
-    def take_answer(self,user_answer):
+    def take_answer(self,user_answer): # Compare user answer and solution and return true or false
         self.answer=user_answer
         if self._make_verification():
             return(True)
         else:
             return(False)
 
-    def insert(self):
+    def insert(self): #Insert a new question  in the database
         conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM MCQ''') #read the table
         result = cur.fetchall()
         new_id=len(result)+1
-        Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution,id) VALUES ("{self.text_question}","{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}","{new_id}")'''
+        Insert_MCQ =f'''INSERT INTO MCQ(question,choice,solution,id) VALUES ("{self.text_question}"
+        ,"{list_to_str(self.text_choice)}","{intlist_to_str(self.solution)}","{new_id}")'''
         cur.execute(Insert_MCQ)
         conn.commit()
         conn.close()
 
-    def get_byid(self,id_ref):
+    def get_byid(self,id_ref): #Find the question with the id=idref
         conn = sqlite3.connect(road)
         cur = conn.cursor()
         command=f'''SELECT * FROM MCQ WHERE id={id_ref}'''
-        cur.execute(command) #read the tableJ
+        cur.execute(command) #read the table
         result = cur.fetchall()
         conn.close()
         self.recreate(result,0)
 
-    def recreate(self,result,i):
-        choice=str_to_list(result[i][1])
-        solution=str_to_intlist(result[i][2])
-        self.actualise(result[i][0],choice,solution,result[i][3])
-
-    def get(self):
+    def get(self): #get a random question from the database
         conn = sqlite3.connect(road)
         cur = conn.cursor()
         cur.execute('''SELECT * FROM MCQ''') #read the table
@@ -122,19 +118,24 @@ class MultipleChoice(Question):
         random_choice=random.randrange(len(result))
         self.recreate(result,random_choice)
 
-    def quizz(self):
+    def recreate(self,result,i): #Recreate a question from the sqlite data
+        choice=str_to_list(result[i][1])
+        solution=str_to_intlist(result[i][2])
+        self.actualise(result[i][0],choice,solution,result[i][3])
+
+    def quizz(self): #Transform the question to a special format for the views
         list_html=[]
         list_html.append(self.text_question)
         list_html.append(self.text_choice)
         list_html.append(self.id)
         return list_html
 
-class Open(Question):
+class Open(Question): #Each class has the same functions
     solution : str
     answer : str
     id : int
     def _make_verification(self):
-        return nlp_test(self.answer,self.solution)
+        return nlp_test(self.answer,self.solution,["wup","path"])
 
     def _transformation(self):
         return self.answer
@@ -439,14 +440,14 @@ def str_to_intlist(a):
 import sqlite3
 #conn = sqlite3.connect('db.sqlite3')
 #cur = conn.cursor()
-#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS NUMBER(question TEXT,solution TEXT,id INT)'''  #Create Table
+#Table_COMPARISON ='''CREATE TABLE IF NOT EXISTS OPEN(question TEXT,solution TEXT,id INT)'''  #Create Table
 #cur.execute(Table_COMPARISON)
-#cur.execute("""DROP TABLE NUMBER""") #Destroy Table
+#cur.execute("""DROP TABLE OPEN""") #Destroy Table
 #conn.commit()
 #conn.close()
 
 ##Fonction finale
-def create_empty_question():
+def create_empty_question(): #Ask user for create a type of question he wants
     type_question=int(input("Which question do you want to create, enter 1 for MCQ, 2 for Open, 3 for Number, 4 for Comparison : "))
     if type_question==1:
         new_question=MultipleChoice()
@@ -459,7 +460,7 @@ def create_empty_question():
     return new_question
 
 
-def create_empty_precise_question(type_question):
+def create_empty_precise_question(type_question): #Create a specific type of question
     if type_question==1:
         new_question=MultipleChoice()
     if type_question==2:
@@ -470,23 +471,14 @@ def create_empty_precise_question(type_question):
         new_question=Comparison()
     return new_question
 
-def insertion_question():
+def insertion_question(): #Insert a question of the type that the user wants in the database
     question=create_empty_question()
     question.ask_user()
     question.insert()
 
-def answer_question():
-    question=get_question()
-    question.take_answer()
-
-def get_question():
-    question=create_empty_question()
-    question.get()
-    return question
-
 #Function for html
 
-def quizz_mcq():
+def quizz_mcq(): #Return a mcq question from the database in a special type
     question=create_empty_precise_question(1)
     question.get()
     return question.quizz()
@@ -506,7 +498,7 @@ def quizz_comparison():
     question.get()
     return question.quizz()
 
-def listquizz_mcq(i):
+def listquizz_mcq(i): # Create a list of i different question from the database in a special type for the views
     list_question=[]
     for j in range(i):
         newquestion=quizz_mcq()
@@ -602,7 +594,7 @@ def nb_question_comparison():
     conn.close()
     return nb_questioninbase
 
-def max_choice_qcm():
+def max_choice_qcm(): #Return the highest number of choices available for one question mcq
     max_choice=0
     conn = sqlite3.connect(road)
     cur = conn.cursor()
@@ -615,4 +607,4 @@ def max_choice_qcm():
     conn.commit()
     conn.close()
     return max_choice
-#prevent injection https://realpython.com/prevent-python-sql-injection/#crafting-safe-query-parameters
+

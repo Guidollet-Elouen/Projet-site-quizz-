@@ -3,7 +3,7 @@ from polls import models
 from polls import config
 import sqlite3
 
-def index(request):
+def index(request):  # Display the questions
     html_header = "<html><body>"
     html_footer = "</body></html>"
     html_response = ""
@@ -30,7 +30,7 @@ def index(request):
     return HttpResponse(http_response)
 
 
-def take_quiz(request):
+def take_quiz(request): #Take the user answer and return it's right or not
     nb_questioninbase=models.nb_question_comparison()
     nb_question=config.nb_question
     affichage=[]

@@ -2,7 +2,7 @@ import requests
 import sqlite3
 from bs4 import BeautifulSoup
 import random
-from config import road
+from .config import road
 
 
 #conn = sqlite3.connect(road)
@@ -44,7 +44,7 @@ def get_header(soup):
     second_cut=cut_wiki_header("Jump to search",first_cut)
     return second_cut
 
-def insertion_wiki(link): #sometimes problems with some word of the text which sqlite3 sees as order (ex List)
+def insertion_wiki(link): #Insert a page "link" in the database
     page = requests.get(link)
     soup = BeautifulSoup(page.content, "html.parser")
     title=get_title(soup)
@@ -64,7 +64,7 @@ def insertion_wiki(link): #sometimes problems with some word of the text which s
     conn.close()
     return "confirmed"
 
-def get_wiki():
+def get_wiki(): #Get a page from the database
     conn = sqlite3.connect(road)
     cur = conn.cursor()
     cur.execute('''SELECT * FROM WIKI''') #read the table
@@ -73,7 +73,6 @@ def get_wiki():
     conn.close()
     return (result[random_choice][0],result[random_choice][1],result[random_choice][2])
 
-URL = "https://en.wikipedia.org/wiki/Special:Random"
+#URL = "https://en.wikipedia.org/wiki/Special:Random"
 #URL = "https://en.wikipedia.org/wiki/List_of_Super_Fight_League_champions"
-a=insertion_wiki(URL)
-print(a)
+
