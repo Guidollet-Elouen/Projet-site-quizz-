@@ -4,7 +4,7 @@ We made a quizz site using the framework Django. This site allows you to chose t
 Prior to launching the website, download the following libraries : 
 gensim, spacy, nltk
 
-In config.py, switch the path "road" to the right one.
+In config.py, switch the path "road" to the right one. Same thing for "nlp_road".
 
 To launch the website, one has to :
 
