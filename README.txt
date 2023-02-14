@@ -1,6 +1,10 @@
 README
 
-We made the projet using the framework Django. To launch the website, one has to :
+We made the projet using the framework Django. 
+Prior to launching the website, download the following libraries : 
+gensim, spacy, nltk.corpus, wiki_down
+
+To launch the website, one has to :
 
 - Go in the file directory in the terminal :
 	- cd desktop 
