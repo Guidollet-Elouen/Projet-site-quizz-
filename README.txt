@@ -2,7 +2,7 @@ README
 
 We made the projet using the framework Django. 
 Prior to launching the website, download the following libraries : 
-gensim, spacy, nltk.corpus, wiki_down
+gensim, spacy, nltk
 
 To launch the website, one has to :
 
