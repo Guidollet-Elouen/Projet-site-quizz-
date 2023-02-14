@@ -12,6 +12,7 @@ from .config import *
 #ltk.download("maxent_ne_chunker")
 #nltk.download("maxent_treebank_pos_tagger")
 #nltk.download("stopwords")
+#nltk.download("words")
 #nltk.download("universal_tagset")
 
 stop_words = set(stopwords.words("english"))
